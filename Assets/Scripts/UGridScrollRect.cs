@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class UGridScrollRect : MonoBehaviour
 {
@@ -24,7 +25,16 @@ public class UGridScrollRect : MonoBehaviour
     void Start()
     {
         sizeDelta = this.GetComponent<RectTransform>().sizeDelta;
+
+        StartCoroutine(InitChildren());
     }
+
+    private IEnumerator InitChildren()
+    {
+        yield return 0;
+    }
+
+
 
     // Update is called once per frame
     void Update()

@@ -78,9 +78,70 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\EmailList.cs" />
+    <Compile Include="Assets\Scripts\InfiniteHorizontalScroll.cs" />
+    <Compile Include="Assets\Scripts\InfiniteScroll.cs" />
+    <Compile Include="Assets\Scripts\InfiniteVerticalScroll.cs" />
+    <Compile Include="Assets\Scripts\ItemCell.cs" />
     <Compile Include="Assets\Scripts\UGridScrollRect.cs" />
     <Compile Include="Assets\Scripts\UScrollRect.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\BottomToTopDemoScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ChangeItemHeightDemoScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ChatMsgDataSourceMgr.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ChatMsgListViewDemoScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ClickAndLoadMoreDemoScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\DataSourceMgr.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\DeleteItemDemoScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\DragChangSizeScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\FPSDisplay.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\GridViewDeleteItemDemoScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\GridViewDemoScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\GridViewSampleDemo.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\HorizontalGalleryDemoScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\LeftToRightDemoScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ListItem0.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ListItem1.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ListItem10.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ListItem11.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ListItem12.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ListItem13.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ListItem14.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ListItem15.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ListItem16.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ListItem2.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ListItem3.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ListItem4.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ListItem5.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ListItem6.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ListItem7.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ListItem8.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ListItem9.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\MenuSceneScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\PageViewDemoScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\PullToLoadMoreDemoScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\PullToRefreshDemoScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ResManager.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\ResponsiveGridViewDemoScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\RightToLeftDemoScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\RotateScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\SpinDatePickerDemoScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\TopToBottomDemoScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\TreeViewDataSourceMgr.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\TreeViewDemoScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\TreeViewItemCountMgr.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\TreeViewWithStickyHeadDemoScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Demo\Scripts\VerticalGalleryDemoScript.cs" />
+    <Compile Include="Assets\SuperScrollView\Scripts\ClickEventListener.cs" />
+    <Compile Include="Assets\SuperScrollView\Scripts\ItemPosMgr.cs" />
+    <Compile Include="Assets\SuperScrollView\Scripts\LoopListView2.cs" />
+    <Compile Include="Assets\SuperScrollView\Scripts\LoopListViewItem2.cs" />
+    <Compile Include="Assets\UGUI\TestMain.cs" />
+    <Compile Include="Assets\UGUI\UIWarpContent.cs" />
+    <Compile Include="Assets\UGUI\UIWarpContentItem.cs" />
     <Compile Include="Assets\UGUIScroll\GridAndLoop.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\SuperScrollView\Scripts\Version 2.2.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
