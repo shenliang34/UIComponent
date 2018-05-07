@@ -132,20 +132,30 @@ public class UScrollRect : MonoBehaviour
                 {
                     tmpList.Clear();
                     int index = 0;
+                    GameObject go = null;
                     for (int i = 0; i < gridLayoutGroup.constraintCount; i++)
                     {
                         index = i;
 
-                        itemList[index].GetComponent<RectTransform>().anchoredPosition = new Vector2(itemList[index].GetComponent<RectTransform>().anchoredPosition.x, -(gridLayoutGroup.cellSize.y + gridLayoutGroup.spacing.y) * lastIndex);
+                        go = itemList[index];
 
-                        updateChildrenCallback(index + lastIndex * gridLayoutGroup.constraintCount, itemList[index], index + startIndex * gridLayoutGroup.constraintCount);
+                        if (lastIndex * gridLayoutGroup.constraintCount + index < totalAmount)
+                        {
+                            go.SetActive(true);
+                            updateChildrenCallback(index + lastIndex * gridLayoutGroup.constraintCount, go, index + startIndex * gridLayoutGroup.constraintCount);
+                        }
+                        else
+                        {
+                            go.SetActive(false);
+                        }
+                        go.GetComponent<RectTransform>().anchoredPosition = new Vector2(go.GetComponent<RectTransform>().anchoredPosition.x, -(gridLayoutGroup.cellSize.y + gridLayoutGroup.spacing.y) * lastIndex);
 
-                        tmpList.Add(itemList[index]);
+                        tmpList.Add(go);
                     }
 
                     for (int i = 0; i < tmpList.Count; i++)
                     {
-                        GameObject go = tmpList[i];
+                        go = tmpList[i];
                         itemList.Remove(go);
                         itemList.Add(go);
                     }
@@ -166,6 +176,8 @@ public class UScrollRect : MonoBehaviour
                     for (int i = 0; i < gridLayoutGroup.constraintCount; i++)
                     {
                         index = itemList.Count - gridLayoutGroup.constraintCount + i;
+
+                        itemList[index].SetActive(true);
 
                         itemList[index].GetComponent<RectTransform>().anchoredPosition = new Vector2(itemList[index].GetComponent<RectTransform>().anchoredPosition.x, -(gridLayoutGroup.cellSize.y + gridLayoutGroup.spacing.y) * startIndex);
 
@@ -189,12 +201,82 @@ public class UScrollRect : MonoBehaviour
         else
         {
             //行
-            float leftPosX = (startIndex + 1) * (gridLayoutGroup.cellSize.x + gridLayoutGroup.spacing.x);
-            if (currentPos.x < -leftPosX)
+            float leftPosX = -(startIndex + 1) * (gridLayoutGroup.cellSize.x + gridLayoutGroup.spacing.x);
+            float rightPosX = -startIndex * (gridLayoutGroup.cellSize.x + gridLayoutGroup.spacing.x);
+            if (currentPos.x < leftPosX)
             {
-                startIndex++;
-                lastIndex++;
-                print("越界x");
+                print("totalIndex" + Mathf.CeilToInt(totalAmount / gridLayoutGroup.constraintCount) + " lastIndex=" + lastIndex);
+                if (lastIndex < Mathf.CeilToInt(totalAmount / gridLayoutGroup.constraintCount))
+                {
+                    tmpList.Clear();
+                    int index = 0;
+
+                    GameObject go = null;
+                    for (int i = 0; i < gridLayoutGroup.constraintCount; i++)
+                    {
+                        index = i;
+
+                        go = itemList[index];
+                        if (lastIndex * gridLayoutGroup.constraintCount + index < totalAmount)
+                        {
+                            go.SetActive(true);
+                            updateChildrenCallback(index + lastIndex * gridLayoutGroup.constraintCount, go, index + startIndex * gridLayoutGroup.constraintCount);
+                        }
+                        else
+                        {
+                            go.SetActive(false);
+                        }
+
+                        go.GetComponent<RectTransform>().anchoredPosition = new Vector2((gridLayoutGroup.cellSize.x + gridLayoutGroup.spacing.x) * lastIndex, go.GetComponent<RectTransform>().anchoredPosition.y);
+
+
+                        tmpList.Add(go);
+                    }
+
+                    for (int i = 0; i < tmpList.Count; i++)
+                    {
+                        go = tmpList[i];
+                        itemList.Remove(go);
+                        itemList.Add(go);
+                    }
+
+                    startIndex++;
+                    lastIndex++;
+                    print("越界x left");
+                }
+            }
+            else if (currentPos.x > rightPosX)
+            {
+                print("越界y bottom" + rightPosX);
+                if (startIndex > 0)
+                {
+                    tmpList.Clear();
+                    int index = 0;
+                    startIndex--;
+                    for (int i = 0; i < gridLayoutGroup.constraintCount; i++)
+                    {
+                        index = itemList.Count - gridLayoutGroup.constraintCount + i;
+
+                        itemList[index].SetActive(true);
+
+                        itemList[index].GetComponent<RectTransform>().anchoredPosition = new Vector2((gridLayoutGroup.cellSize.x + gridLayoutGroup.spacing.x) * startIndex,itemList[index].GetComponent<RectTransform>().anchoredPosition.y);
+
+                        updateChildrenCallback(i + startIndex * gridLayoutGroup.constraintCount, itemList[index], index + startIndex * gridLayoutGroup.constraintCount);
+
+                        tmpList.Add(itemList[index]);
+                    }
+
+                    for (int i = 0; i < tmpList.Count; i++)
+                    {
+                        GameObject go = tmpList[i];
+                        itemList.Remove(go);
+                        itemList.Insert(i, go);
+                    }
+
+
+                    lastIndex--;
+                    print("越界x right");
+                }
             }
         }
 

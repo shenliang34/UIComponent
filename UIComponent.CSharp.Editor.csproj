@@ -125,6 +125,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Editor\Scripts\ScrollEditorScript.cs" />
     <Compile Include="Assets\SuperScrollView\Editor\LoopListViewEditor2.cs" />
   </ItemGroup>
   <ItemGroup>

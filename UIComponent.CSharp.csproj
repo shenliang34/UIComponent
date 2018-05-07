@@ -77,7 +77,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\EmailList.cs" />
+    <Compile Include="Assets\Scripts\InfiniteHorizontalScroll.cs" />
+    <Compile Include="Assets\Scripts\InfiniteScroll.cs" />
+    <Compile Include="Assets\Scripts\InfiniteVerticalScroll.cs" />
+    <Compile Include="Assets\Scripts\ItemCell.cs" />
     <Compile Include="Assets\Scripts\LoopScrollRect.cs" />
+    <Compile Include="Assets\Scripts\UGridScrollRect.cs" />
+    <Compile Include="Assets\Scripts\UScrollRect.cs" />
     <Compile Include="Assets\SuperScrollView\Demo\Scripts\BottomToTopDemoScript.cs" />
     <Compile Include="Assets\SuperScrollView\Demo\Scripts\ChangeItemHeightDemoScript.cs" />
     <Compile Include="Assets\SuperScrollView\Demo\Scripts\ChatMsgDataSourceMgr.cs" />
@@ -128,6 +135,10 @@
     <Compile Include="Assets\SuperScrollView\Scripts\ItemPosMgr.cs" />
     <Compile Include="Assets\SuperScrollView\Scripts\LoopListView2.cs" />
     <Compile Include="Assets\SuperScrollView\Scripts\LoopListViewItem2.cs" />
+    <Compile Include="Assets\UGUI\TestMain.cs" />
+    <Compile Include="Assets\UGUI\UIWarpContent.cs" />
+    <Compile Include="Assets\UGUI\UIWarpContentItem.cs" />
+    <Compile Include="Assets\UGUIScroll\GridAndLoop.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\SuperScrollView\Scripts\Version 2.2.txt" />
