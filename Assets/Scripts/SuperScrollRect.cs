@@ -131,7 +131,6 @@ public class SuperScrollRect : MonoBehaviour
             //列
             if (currentPos.y > upPosY)
             {
-                print("totalIndex" + Mathf.CeilToInt(totalAmount / gridLayoutGroup.constraintCount) + " lastIndex=" + lastIndex);
                 if (lastIndex < Mathf.CeilToInt(totalAmount / gridLayoutGroup.constraintCount))
                 {
                     tmpList.Clear();
@@ -172,7 +171,6 @@ public class SuperScrollRect : MonoBehaviour
             }
             else if (currentPos.y < bottomPosY)
             {
-                print("越界y bottom" + bottomPosY);
                 if (startIndex > 0)
                 {
                     tmpList.Clear();
@@ -212,7 +210,6 @@ public class SuperScrollRect : MonoBehaviour
             float rightPosX = -startIndex * (gridLayoutGroup.cellSize.x + gridLayoutGroup.spacing.x);
             if (currentPos.x < leftPosX)
             {
-                print("totalIndex" + Mathf.CeilToInt(totalAmount / gridLayoutGroup.constraintCount) + " lastIndex=" + lastIndex);
                 if (lastIndex < Mathf.CeilToInt(totalAmount / gridLayoutGroup.constraintCount))
                 {
                     tmpList.Clear();
@@ -251,12 +248,10 @@ public class SuperScrollRect : MonoBehaviour
                     lastIndex++;
 
                     needUpdate = true;
-                    print("越界x left");
                 }
             }
             else if (currentPos.x > rightPosX)
             {
-                print("越界y bottom" + rightPosX);
                 if (startIndex > 0)
                 {
                     tmpList.Clear();
@@ -290,12 +285,15 @@ public class SuperScrollRect : MonoBehaviour
             }
         }
 
+        //是否需要更新下一次
         if (needUpdate)
         {
             this.UpdateListView();
         }
     }
 
+
+    //创建item
     private GameObject CreateItem()
     {
         GameObject item = null;
@@ -348,7 +346,6 @@ public class SuperScrollRect : MonoBehaviour
         {
             if (this.totalAmount > 0)
             {
-                print("xxxx" + Mathf.CeilToInt(this.totalAmount / gridLayoutGroup.constraintCount));
                 //列 列 列
                 size.x = gridLayoutGroup.constraintCount * (gridLayoutGroup.cellSize.x + gridLayoutGroup.spacing.x) - gridLayoutGroup.spacing.x;
                 size.y = Mathf.CeilToInt(this.totalAmount / gridLayoutGroup.constraintCount) * (gridLayoutGroup.cellSize.y + gridLayoutGroup.spacing.y) - gridLayoutGroup.spacing.y;

@@ -22,7 +22,6 @@ public class EmailList : MonoBehaviour {
 
     private void UpdateChildrenCallback(int index, string name)
     {
-        print(string.Format("index = {0},go.name={1}", index, name));
         dict[name].transform.Find("Text").GetComponent<Text>().text = index+"";
     }
 
