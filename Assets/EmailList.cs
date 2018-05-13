@@ -6,17 +6,24 @@ using UnityEngine.UI;
 
 public class EmailList : MonoBehaviour {
 
-    public UScrollRect uscrollRect;
+    public SuperScrollRect uscrollRect;
     public InputField inputField;
+    public Dictionary<string, GameObject> dict = new Dictionary<string, GameObject>();
 	// Use this for initialization
 	void Start () {
+        uscrollRect.initChildrenCallback = InitChildrenCallback;
         uscrollRect.updateChildrenCallback = UpdateChildrenCallback;
 	}
 
-    private void UpdateChildrenCallback(int index, GameObject go, int srcIndex)
+    private void InitChildrenCallback(GameObject go)
     {
-        print(string.Format("index = {0},go.name={1},srcIndex={2} ", index, go.name, srcIndex));
-        go.transform.Find("Text").GetComponent<Text>().text = index+"";
+        dict.Add(go.name, go);
+    }
+
+    private void UpdateChildrenCallback(int index, string name)
+    {
+        print(string.Format("index = {0},go.name={1}", index, name));
+        dict[name].transform.Find("Text").GetComponent<Text>().text = index+"";
     }
 
     // Update is called once per frame

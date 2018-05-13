@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
 
-public class UScrollRect : MonoBehaviour
+public class SuperScrollRect : MonoBehaviour
 {
     public GameObject itemCellPrefab;
 
@@ -42,8 +42,8 @@ public class UScrollRect : MonoBehaviour
 
     public float totalAmount = 0;
 
-    public delegate void UpdateChildrenCallbackDelegate(int index, GameObject go, int srcIndex);
-    public UpdateChildrenCallbackDelegate updateChildrenCallback = null;
+    public Action<GameObject> initChildrenCallback = null;
+    public Action<int,string> updateChildrenCallback = null;
 
     public bool isInitChildren;
 
@@ -51,12 +51,11 @@ public class UScrollRect : MonoBehaviour
 
     public Vector2 startPosition;
 
+    public bool isScrollTo;
+
     private void Start()
     {
-        if (isInitChildren == false)
-        {
-            this.Init();
-        }
+        this.Init();
     }
 
     private void Init()
@@ -101,15 +100,19 @@ public class UScrollRect : MonoBehaviour
         for (int i = 0; i < minAmount; i++)
         {
             GameObject go = this.CreateItem();
+            go.name = i + "";
+            this.InitChilrenCallback(go);
         }
 
         isInitChildren = true;
+
+        SetAmount(this.totalAmount);
     }
 
 
     private void ScrollCallBack(Vector2 data)
     {
-        if (itemList.Count > 0)
+        if (isScrollTo==false)
         {
             UpdateListView();
         }
@@ -142,7 +145,7 @@ public class UScrollRect : MonoBehaviour
                         if (lastIndex * gridLayoutGroup.constraintCount + index < totalAmount)
                         {
                             go.SetActive(true);
-                            updateChildrenCallback(index + lastIndex * gridLayoutGroup.constraintCount, go, index + startIndex * gridLayoutGroup.constraintCount);
+                            UpdateChildrenCallback(index + lastIndex * gridLayoutGroup.constraintCount, go);
                         }
                         else
                         {
@@ -181,7 +184,7 @@ public class UScrollRect : MonoBehaviour
 
                         itemList[index].GetComponent<RectTransform>().anchoredPosition = new Vector2(itemList[index].GetComponent<RectTransform>().anchoredPosition.x, -(gridLayoutGroup.cellSize.y + gridLayoutGroup.spacing.y) * startIndex);
 
-                        updateChildrenCallback(i + startIndex * gridLayoutGroup.constraintCount, itemList[index], index + startIndex * gridLayoutGroup.constraintCount);
+                        UpdateChildrenCallback(i + startIndex * gridLayoutGroup.constraintCount, itemList[index]);
 
                         tmpList.Add(itemList[index]);
                     }
@@ -220,7 +223,7 @@ public class UScrollRect : MonoBehaviour
                         if (lastIndex * gridLayoutGroup.constraintCount + index < totalAmount)
                         {
                             go.SetActive(true);
-                            updateChildrenCallback(index + lastIndex * gridLayoutGroup.constraintCount, go, index + startIndex * gridLayoutGroup.constraintCount);
+                            UpdateChildrenCallback(index + lastIndex * gridLayoutGroup.constraintCount, go);
                         }
                         else
                         {
@@ -261,7 +264,7 @@ public class UScrollRect : MonoBehaviour
 
                         itemList[index].GetComponent<RectTransform>().anchoredPosition = new Vector2((gridLayoutGroup.cellSize.x + gridLayoutGroup.spacing.x) * startIndex,itemList[index].GetComponent<RectTransform>().anchoredPosition.y);
 
-                        updateChildrenCallback(i + startIndex * gridLayoutGroup.constraintCount, itemList[index], index + startIndex * gridLayoutGroup.constraintCount);
+                        UpdateChildrenCallback(i + startIndex * gridLayoutGroup.constraintCount, itemList[index]);
 
                         tmpList.Add(itemList[index]);
                     }
@@ -318,36 +321,14 @@ public class UScrollRect : MonoBehaviour
         item.SetActive(true);
     }
 
-    //添加到末位置
-    private void AddItemToEnd()
-    {
-
-    }
-
-    //移除首位置
-    private void RemoveItemFromStart()
-    {
-
-    }
-
-    //移除末位置
-    private void RemoveItemFromEnd()
-    {
-
-    }
-
-
-    public void SetAmount(int amount)
+    public void SetAmount(float amount)
     {
         this.totalAmount = amount;
-
-        if (isInitChildren == false)
+        if (isInitChildren)
         {
-            this.Init();
+            UpdateContentSize();
+            UpdateAllView();
         }
-
-        UpdateContentSize();
-        UpdateAllView();
     }
 
     private void UpdateContentSize()
@@ -381,15 +362,19 @@ public class UScrollRect : MonoBehaviour
 
     private void UpdateAllView(int startIndex = 0)
     {
+        scrollRect.StopMovement();
+
         this.startIndex = startIndex;
-        this.lastIndex = startIndex;
+        this.lastIndex = this.startIndex;
 
         Vector2 pos = Vector2.zero;
 
+        int index = 0;
         for (int i = 0; i < itemList.Count; i++)
         {
             GameObject go = itemList[i];
-            if (this.startIndex + i >= totalAmount)
+            index = this.startIndex * gridLayoutGroup.constraintCount + i;
+            if (index >= totalAmount)
             {
                 go.SetActive(false);
             }
@@ -397,17 +382,17 @@ public class UScrollRect : MonoBehaviour
             {
                 go.SetActive(true);
 
-                UpdateChildrenCallback(i, go, i);
+                UpdateChildrenCallback(index, go);
 
                 if (gridLayoutGroup.constraint == GridLayoutGroup.Constraint.FixedColumnCount)
                 {
-                    pos.x = Mathf.CeilToInt(i % gridLayoutGroup.constraintCount) * (gridLayoutGroup.cellSize.x + gridLayoutGroup.spacing.x);
-                    pos.y = -Mathf.CeilToInt(i / gridLayoutGroup.constraintCount) * (gridLayoutGroup.cellSize.y + gridLayoutGroup.spacing.y);
+                    pos.x = Mathf.CeilToInt(index % gridLayoutGroup.constraintCount) * (gridLayoutGroup.cellSize.x + gridLayoutGroup.spacing.x);
+                    pos.y = -Mathf.CeilToInt(index / gridLayoutGroup.constraintCount) * (gridLayoutGroup.cellSize.y + gridLayoutGroup.spacing.y);
                 }
                 else
                 {
-                    pos.x = Mathf.CeilToInt(i / gridLayoutGroup.constraintCount) * (gridLayoutGroup.cellSize.x + gridLayoutGroup.spacing.x);
-                    pos.y = -Mathf.CeilToInt(i % gridLayoutGroup.constraintCount) * (gridLayoutGroup.cellSize.y + gridLayoutGroup.spacing.y);
+                    pos.x = Mathf.CeilToInt(index / gridLayoutGroup.constraintCount) * (gridLayoutGroup.cellSize.x + gridLayoutGroup.spacing.x);
+                    pos.y = -Mathf.CeilToInt(index % gridLayoutGroup.constraintCount) * (gridLayoutGroup.cellSize.y + gridLayoutGroup.spacing.y);
                 }
                 if (i % gridLayoutGroup.constraintCount == 0)
                 {
@@ -416,6 +401,8 @@ public class UScrollRect : MonoBehaviour
                 go.GetComponent<RectTransform>().anchoredPosition = pos;
             }
         }
+
+        content.anchoredPosition3D = new Vector3(content.anchoredPosition3D.x, this.startIndex * (gridLayoutGroup.cellSize.x + gridLayoutGroup.spacing.x));
     }
 
     public void ScrollTo(int num)
@@ -435,11 +422,23 @@ public class UScrollRect : MonoBehaviour
     /// <param name="index"></param>
     /// <param name="trans"></param>
     /// <param name="srcIndex"></param>
-    public void UpdateChildrenCallback(int index, GameObject go, int srcIndex)
+    public void UpdateChildrenCallback(int index, GameObject go)
     {
         if (updateChildrenCallback != null)
         {
-            updateChildrenCallback(index, go, srcIndex);
+            updateChildrenCallback(index, go.name);
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="go"></param>
+    public void InitChilrenCallback(GameObject go)
+    {
+        if (initChildrenCallback != null)
+        {
+            initChildrenCallback(go);
         }
     }
 
