@@ -43,7 +43,7 @@ public class SuperScrollRect : MonoBehaviour
     public float totalAmount = 0;
 
     public Action<GameObject> initChildrenCallback = null;
-    public Action<int,string> updateChildrenCallback = null;
+    public Action<int, string> updateChildrenCallback = null;
 
     public bool isInitChildren;
 
@@ -112,7 +112,7 @@ public class SuperScrollRect : MonoBehaviour
 
     private void ScrollCallBack(Vector2 data)
     {
-        if (isScrollTo==false)
+        if (isScrollTo == false)
         {
             UpdateListView();
         }
@@ -122,6 +122,7 @@ public class SuperScrollRect : MonoBehaviour
 
     private void UpdateListView()
     {
+        bool needUpdate = false;
         Vector2 currentPos = content.anchoredPosition;
         if (gridLayoutGroup.constraint == GridLayoutGroup.Constraint.FixedColumnCount)
         {
@@ -165,13 +166,14 @@ public class SuperScrollRect : MonoBehaviour
 
                     startIndex++;
                     lastIndex++;
-                    print("越界y up");
+
+                    needUpdate = true;
                 }
             }
-            else if(currentPos.y<bottomPosY)
+            else if (currentPos.y < bottomPosY)
             {
-                print("越界y bottom"+bottomPosY);
-                if (startIndex >0)
+                print("越界y bottom" + bottomPosY);
+                if (startIndex > 0)
                 {
                     tmpList.Clear();
                     int index = 0;
@@ -196,8 +198,10 @@ public class SuperScrollRect : MonoBehaviour
                         itemList.Insert(i, go);
                     }
 
-                    
+
                     lastIndex--;
+
+                    needUpdate = true;
                 }
             }
         }
@@ -245,6 +249,8 @@ public class SuperScrollRect : MonoBehaviour
 
                     startIndex++;
                     lastIndex++;
+
+                    needUpdate = true;
                     print("越界x left");
                 }
             }
@@ -262,7 +268,7 @@ public class SuperScrollRect : MonoBehaviour
 
                         itemList[index].SetActive(true);
 
-                        itemList[index].GetComponent<RectTransform>().anchoredPosition = new Vector2((gridLayoutGroup.cellSize.x + gridLayoutGroup.spacing.x) * startIndex,itemList[index].GetComponent<RectTransform>().anchoredPosition.y);
+                        itemList[index].GetComponent<RectTransform>().anchoredPosition = new Vector2((gridLayoutGroup.cellSize.x + gridLayoutGroup.spacing.x) * startIndex, itemList[index].GetComponent<RectTransform>().anchoredPosition.y);
 
                         UpdateChildrenCallback(i + startIndex * gridLayoutGroup.constraintCount, itemList[index]);
 
@@ -278,12 +284,16 @@ public class SuperScrollRect : MonoBehaviour
 
 
                     lastIndex--;
-                    print("越界x right");
+
+                    needUpdate = true;
                 }
             }
         }
 
-        startPosition = currentPos;
+        if (needUpdate)
+        {
+            this.UpdateListView();
+        }
     }
 
     private GameObject CreateItem()
@@ -356,13 +366,56 @@ public class SuperScrollRect : MonoBehaviour
             }
         }
 
-        print("size = " + size);
         content.sizeDelta = size;
     }
 
     private void UpdateAllView(int startIndex = 0)
     {
         scrollRect.StopMovement();
+
+
+        //确定位置
+        if (gridLayoutGroup.constraint == GridLayoutGroup.Constraint.FixedColumnCount)
+        {
+            float targetY = 0;
+
+            targetY = startIndex * (gridLayoutGroup.cellSize.y + gridLayoutGroup.spacing.y);
+            if (content.sizeDelta.y - targetY < sizeDelta.y)
+            {
+                if (content.sizeDelta.y < sizeDelta.y)
+                {
+                    startIndex = 0;
+                    targetY = 0;
+                }
+                else
+                {
+                    startIndex = Mathf.FloorToInt((content.sizeDelta.y - sizeDelta.y) / (gridLayoutGroup.cellSize.y + gridLayoutGroup.spacing.y));
+                    targetY = content.sizeDelta.y - sizeDelta.y;
+                }
+            }
+            content.anchoredPosition3D = new Vector3(content.anchoredPosition3D.x, targetY);
+        }
+        else
+        {
+            float targetX = 0;
+
+            targetX = startIndex * (gridLayoutGroup.cellSize.x + gridLayoutGroup.spacing.x);
+            if (content.sizeDelta.x - targetX < sizeDelta.x)
+            {
+                if (content.sizeDelta.x < sizeDelta.x)
+                {
+                    startIndex = 0;
+                    targetX = 0;
+                }
+                else
+                {
+                    startIndex = Mathf.FloorToInt((content.sizeDelta.x - sizeDelta.x) / (gridLayoutGroup.cellSize.x + gridLayoutGroup.spacing.x));
+                    targetX = content.sizeDelta.x - sizeDelta.x;
+                }
+            }
+            content.anchoredPosition3D = new Vector3(-targetX, content.anchoredPosition3D.y);
+        }
+
 
         this.startIndex = startIndex;
         this.lastIndex = this.startIndex;
@@ -401,8 +454,6 @@ public class SuperScrollRect : MonoBehaviour
                 go.GetComponent<RectTransform>().anchoredPosition = pos;
             }
         }
-
-        content.anchoredPosition3D = new Vector3(content.anchoredPosition3D.x, this.startIndex * (gridLayoutGroup.cellSize.x + gridLayoutGroup.spacing.x));
     }
 
     public void ScrollTo(int num)

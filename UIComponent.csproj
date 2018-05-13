@@ -83,8 +83,9 @@
     <Compile Include="Assets\Scripts\InfiniteScroll.cs" />
     <Compile Include="Assets\Scripts\InfiniteVerticalScroll.cs" />
     <Compile Include="Assets\Scripts\ItemCell.cs" />
+    <Compile Include="Assets\Scripts\LoopScrollRect.cs" />
+    <Compile Include="Assets\Scripts\SuperScrollRect.cs" />
     <Compile Include="Assets\Scripts\UGridScrollRect.cs" />
-    <Compile Include="Assets\Scripts\UScrollRect.cs" />
     <Compile Include="Assets\SuperScrollView\Demo\Scripts\BottomToTopDemoScript.cs" />
     <Compile Include="Assets\SuperScrollView\Demo\Scripts\ChangeItemHeightDemoScript.cs" />
     <Compile Include="Assets\SuperScrollView\Demo\Scripts\ChatMsgDataSourceMgr.cs" />
